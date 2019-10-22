@@ -160,7 +160,7 @@ def main(_argv):
                 'checkpoints/yolov3_train_{}.tf'.format(epoch))
     else:
         model.compile(optimizer=optimizer, loss=loss,
-                      run_eagerly=(FLAGS.mode == 'eager_fit'))
+                      run_eagerly=(FLAGS.mode == 'eager_fit'), metrics=['accuracy'])
 
         callbacks = [
             ReduceLROnPlateau(verbose=1),
