@@ -20,6 +20,7 @@ import yolov3_tf2.dataset as dataset
 flags.DEFINE_string('dataset', '', 'path to dataset')
 flags.DEFINE_string('val_dataset', '', 'path to validation dataset')
 flags.DEFINE_boolean('tiny', False, 'yolov3 or yolov3-tiny')
+flags.DEFINE_boolean('initial_epoch', 0, 'if interupeted  please choose where to start')
 flags.DEFINE_string('weights', './checkpoints/yolov3.tf',
                     'path to weights file')
 flags.DEFINE_string('classes', './data/coco.names', 'path to classes file')
@@ -178,7 +179,7 @@ def main(_argv):
                             callbacks=callbacks,
                             validation_data=val_dataset,
                             validation_freq=3,
-                            initial_epoch=0)
+                            initial_epoch=FLAGS.initial_epoch)
 
 
 if __name__ == '__main__':
