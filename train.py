@@ -165,7 +165,7 @@ def main(_argv):
         callbacks = [
             ReduceLROnPlateau(verbose=1),
             EarlyStopping(patience=3, verbose=1),
-            ModelCheckpoint('checkpoints/yolov3_train_-{epoch:02d}-{val_accuracy:.2f}.hdf5',
+            ModelCheckpoint('checkpoints/yolov3_train_-{epoch:02d}.hdf5',
                             verbose=1, 
                             monitor='val_accuracy',
                             save_weights_only=False,
