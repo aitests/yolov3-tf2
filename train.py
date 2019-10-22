@@ -164,7 +164,7 @@ def main(_argv):
                       run_eagerly=(FLAGS.mode == 'eager_fit'), metrics=['accuracy'])
         
         if FLAGS.load_saved != '':
-            model = tf.keras.models.load_model(load_saved)
+            model = tf.keras.models.load_model(FLAGS.load_saved)
             model.evaluate(val_dataset)
         callbacks = [
             ReduceLROnPlateau(verbose=1),
