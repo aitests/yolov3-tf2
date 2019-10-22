@@ -164,15 +164,21 @@ def main(_argv):
         callbacks = [
             ReduceLROnPlateau(verbose=1),
             EarlyStopping(patience=3, verbose=1),
-            ModelCheckpoint('checkpoints/yolov3_train_{epoch}.tf',
-                            verbose=1, save_weights_only=True),
+            ModelCheckpoint('checkpoints/yolov3_train_-{epoch:02d}-{val_accuracy:.2f}.hdf5',
+                            verbose=1, 
+                            monitor='val_accuracy',
+                            save_weights_only=False,
+                            save_best_only=False,
+                            save_frequency=3),
             TensorBoard(log_dir='logs')
         ]
 
         history = model.fit(train_dataset,
                             epochs=FLAGS.epochs,
                             callbacks=callbacks,
-                            validation_data=val_dataset)
+                            validation_data=val_dataset,
+                            validation_freq=3,
+                            initial_epoch=1)
 
 
 if __name__ == '__main__':
