@@ -178,7 +178,7 @@ def main(_argv):
                             callbacks=callbacks,
                             validation_data=val_dataset,
                             validation_freq=3,
-                            initial_epoch=1)
+                            initial_epoch=0)
 
 
 if __name__ == '__main__':
