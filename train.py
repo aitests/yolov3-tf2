@@ -20,7 +20,8 @@ import yolov3_tf2.dataset as dataset
 flags.DEFINE_string('dataset', '', 'path to dataset')
 flags.DEFINE_string('val_dataset', '', 'path to validation dataset')
 flags.DEFINE_boolean('tiny', False, 'yolov3 or yolov3-tiny')
-flags.DEFINE_boolean('initial_epoch', 0, 'if interupeted  please choose where to start')
+flags.DEFINE_string('load_saved', '', 'path to saved model')
+flags.DEFINE_integer('save_frequency', 3, 'How frequent save backup')
 flags.DEFINE_string('weights', './checkpoints/yolov3.tf',
                     'path to weights file')
 flags.DEFINE_string('classes', './data/coco.names', 'path to classes file')
@@ -161,7 +162,10 @@ def main(_argv):
     else:
         model.compile(optimizer=optimizer, loss=loss,
                       run_eagerly=(FLAGS.mode == 'eager_fit'), metrics=['accuracy'])
-
+        
+        if FLAGS.load_saved != '':
+            model = tf.keras.models.load_model(load_saved)
+            model.evaluate(val_dataset)
         callbacks = [
             ReduceLROnPlateau(verbose=1),
             EarlyStopping(patience=3, verbose=1),
@@ -170,16 +174,15 @@ def main(_argv):
                             monitor='val_accuracy',
                             save_weights_only=False,
                             save_best_only=False,
-                            save_frequency=3),
+                            save_frequency=FLAGS.save_frequency),
             TensorBoard(log_dir='logs')
         ]
-
+     
         history = model.fit(train_dataset,
                             epochs=FLAGS.epochs,
                             callbacks=callbacks,
                             validation_data=val_dataset,
-                            validation_freq=3,
-                            initial_epoch=FLAGS.initial_epoch)
+                            validation_freq=FLAGS.save_frequency)
 
 
 if __name__ == '__main__':
